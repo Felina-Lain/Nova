@@ -1,0 +1,14 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\renderMAJ.cs">
+    <Files>
+      <File FileName="Assets\Scripts\Agglomeration.cs" Line="198" Column="88" />
+      <File FileName="Assets\PlanetRenderSettup.cs" Line="22" Column="37" />
+      <File FileName="Assets\renderMAJ.cs" Line="37" Column="36" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

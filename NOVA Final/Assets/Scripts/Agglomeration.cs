@@ -1,0 +1,420 @@
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+[RequireComponent(typeof(Rigidbody))]
+public class Agglomeration : MonoBehaviour
+{
+
+    public float _PullStrenght = 1;
+    public GameObject _SpherePrefab;
+    //public float _X = 0.5f;
+    public int _Subdivisions = 10;
+    public float _Absorbsion = 0.1f;
+    private float _Time = 0;
+    public GameObject _ExploParticle;
+    public float _PullRange = 10.0f;
+    public float _TailleMinimale = 0.1f;
+	public bool cangloup = false;
+
+	public float timeOfTravel = 4.0f;
+
+	private float currentTimer = 0.0f;
+
+	public PlanetoidState currentState;
+
+	public float solarGrowthSpeed = 1.0f;
+	
+	[HideInInspector]
+	public renderMAJ myRenderManager;
+
+	AudioSource source;
+
+	public enum PlanetoidState{
+		Planet,
+		Solar,
+		BlackHole,
+		BlackHoleBoom
+	}
+
+//	void OnDisable(){
+//		print ("disaaaaaaabled");
+//	}
+
+	void OnEnable ()
+    {
+		this.gameObject.name = "Sphere";
+		source = GetComponent<AudioSource>();
+		//print ("enableeeeeed");
+		cangloup = false;
+		//transform.GetComponent<MeshRenderer>().material.color = Color.red;
+		myRenderManager = transform.Find("Render").GetComponent<renderMAJ>();
+		StateCheckup();
+		//Maj render
+		PlanetRenderSettup.uniqueInstance.PlanetSubSizeCheck(this, transform.localScale.x);
+		if(this.gameObject == enabled)
+			StartCoroutine("fixerroutine"); 
+	}
+
+//	void Start(){
+//		print ("awake");
+//		cangloup = false;
+//		transform.GetComponent<MeshRenderer>().material.color = Color.red;
+//		StateCheckup();
+//		if(this.gameObject == enabled)
+//			StartCoroutine("fixerroutine"); 
+//	}
+
+	public float dragScaleFactor = 1.0f;
+	public float[] rangeExplForce = new float[2]{5.0f, 10.0f};
+	public float pullRangeMultiplier = 10.0f;
+	public float[] rangeExplForceChain = new float[2]{5.0f, 10.0f};
+
+
+	void Update ()
+    {
+        _Time += Time.deltaTime;
+		curCoolDown += Time.deltaTime;
+        
+		GetComponent<Rigidbody>().drag = transform.localScale.x / dragScaleFactor;
+
+		_PullRange = transform.localScale.x * pullRangeMultiplier;
+
+		//temps de trajet avant absorbable
+		if(!cangloup){
+			if (currentTimer >= timeOfTravel) {
+				cangloup = true;
+				//transform.GetComponent<MeshRenderer>().material.color = Color.blue;
+
+			} else {
+				currentTimer += Time.deltaTime;
+			}
+		}
+
+		if(currentState == PlanetoidState.Solar){
+			//Maj du scale
+			float _f = solarGrowthSpeed * Time.deltaTime;;
+			transform.localScale += new Vector3(_f, _f, _f);
+		}
+
+		StateCheckup();
+	}
+
+
+
+    void FixedUpdate()
+    {
+		//StartCoroutine("fixerroutine");
+    }
+
+	IEnumerator fixerroutine(){
+
+		float _yieldvlue = CommonSettupv2.yieldvlueStatic;
+
+		while(enabled){
+		//Attraction
+		if(cangloup){
+			GameObject[] _AllSphere = GameObject.FindGameObjectsWithTag("Sphere");
+			foreach (GameObject _g in _AllSphere)
+			{
+				//Check de la difference de scale. Si suffisante, alors attraction
+				if(PalierMinimal(transform.localScale.x, _g.transform.localScale.x)){
+					
+					//Si n'est pas un trou noir
+					if(_g.GetComponent<Agglomeration>().currentState != PlanetoidState.BlackHole){
+						
+						if (_Time >= 1 && _g != this.gameObject && _g.GetComponent<Rigidbody>() && Vector3.Distance(transform.position, _g.transform.position) < _PullRange && _g.GetComponent<Agglomeration>().cangloup)
+						{
+//							print (Vector3.Distance(transform.position, _g.transform.position));
+							//Vector3 _v = transform.position - _g.transform.position;
+							//float _T = transform.localScale.x * 100;
+							//_g.GetComponent<Rigidbody>().AddForce(_v.normalized * (1 / _v.magnitude) * _PullStrenght * _T * _T);
+							_g.GetComponent<Rigidbody>().AddForce(RotAroundAntoine(_g.transform) * Time.deltaTime, ForceMode.VelocityChange);//RotAroundAntoine();
+							
+							}
+						
+						}
+					}
+				}
+			}
+			yield return new WaitForSeconds(_yieldvlue + Random.Range(-0.2f, 0.5f));
+		}
+	}
+
+	public float horizontalMultiplier = 600.0f;
+	public float speedVel = 100.0f;
+	float horizontalForce = 1.0f;
+	public float verticalForce = 1.0f;
+
+	Vector3 RotAroundAntoine (Transform target){
+
+//		float horizontal = Input.GetAxis("Horizontal");
+//		float vertical = Input.GetAxis("Vertical");
+		
+		Vector3 direction = (transform.GetComponent<Rigidbody>().position - target.position).normalized;
+		
+		Vector3 vec = Vector3.up;
+		//		vec = target.position - Vector3.Project(target.position, transform.GetComponent<Rigidbody>().position);
+		//		vec = vec.normalized;
+		
+		Vector3 rotation = Quaternion.AngleAxis(horizontalForce * horizontalMultiplier, vec) * direction * Mathf.Abs(horizontalForce);
+		Vector3 desired = rotation + verticalForce * direction;
+		Vector3 change = desired * speedVel - target.GetComponent<Rigidbody>().velocity;
+		// Debug lines: Red - current heading
+		//              Blue - applied heading
+		Debug.DrawLine(target.GetComponent<Rigidbody>().position, target.GetComponent<Rigidbody>().position + target.GetComponent<Rigidbody>().velocity, Color.red);
+		Debug.DrawLine(target.GetComponent<Rigidbody>().position, target.GetComponent<Rigidbody>().position + change, Color.blue);
+		//GetComponent<Rigidbody>().AddForce(change * Time.deltaTime, ForceMode.VelocityChange);
+
+		return change;
+	}
+
+	public float porcentScale = 0.9f;	//pourcent à franchir pour etre attire
+
+	//Verif de palier scale
+	bool PalierMinimal(float scaleA, float scaleB){
+		if(scaleB <= porcentScale * scaleA){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	float curCoolDown = 0.0f;
+	public float coolDown = 1.0f;
+
+    void OnTriggerStay(Collider _coll)
+    {
+
+        if (_coll.tag == "Sphere" && _Time >= 0.9f)
+        {
+
+			//Absorbtion
+			if (cangloup && _coll.GetComponent<Agglomeration>().cangloup){
+				if(curCoolDown > coolDown){
+					if (_coll.transform.localScale.x <= transform.localScale.x)
+					{    
+						//Maj du scale
+						float _f = _coll.transform.localScale.x;
+		                transform.localScale += new Vector3(_f, _f, _f);
+
+						//Maj render
+						PlanetRenderSettup.uniqueInstance.PlanetSubSizeCheck(this, transform.localScale.x);
+
+						//Maj du trail
+						GetComponent<TrailRenderer>().startWidth = _f;
+
+						//Changement de State
+						StateCheckup();
+
+						//Son
+						//source.clip = fxSoundManager.uniqueFXinstance.SetRandomSound(7, 8);
+						source.PlayOneShot(fxSoundManager.uniqueFXinstance.SetRandomSound(7, 8));
+
+						//reinitialisation de celui qu'ona bsorbe
+						_coll.GetComponent<Agglomeration>().currentState = PlanetoidState.Planet;
+						//_coll.GetComponent<Agglomeration>().cangloup = false;
+						//Maj render
+						PlanetRenderSettup.uniqueInstance.PlanetSubSizeCheck(_coll.GetComponent<Agglomeration>(), transform.localScale.x);
+
+						//Destruction de l'objet
+						ObjectPool.instance.PoolObject(_coll.gameObject);
+		                //Destroy(_coll.gameObject);
+
+						//print (CommonSettupv2.scalesIntervaleS[8]);
+
+
+					}
+				}
+			}else{
+				Explode(_coll);
+			}
+
+//			if(transform.localScale.x > CommonSettupv2.scalesIntervaleS[8]){
+//				Explode(_coll);
+//				print ("BOUM : " + currentState);
+//				ObjectPool.instance.PoolObject(this.gameObject);
+//			}
+		}
+
+
+    }
+
+    
+
+	//Destruction de l'objet et generation de subdivisions
+    public void Explode(Collider _coll)
+    {
+		//Explosion uniquement en cas de matiere suffisante
+        if (transform.localScale.x >= _TailleMinimale) {
+			_Time = 0;
+			//GameObject _expl = ObjectPool.instance.GetObjectForType ("ExploParticle", false);
+			//_expl.transform.position = transform.position;
+			//_expl.transform.rotation = Quaternion.identity;
+			GameObject _expl = Instantiate (_ExploParticle, transform.position, Quaternion.identity) as GameObject;
+			_expl.name = "ExploParticle";
+
+
+			//Store le SCALE (V3) dans un FLOAT
+			float valeur = transform.localScale.x;
+			//Definit le nombre de subdivisions en fonction du SCALE
+			_Subdivisions = CommonSettupv2.SubdivisionByRange(valeur);
+
+			//Subdivise
+			for (int i = 0; i < _Subdivisions; i++) {
+
+				GameObject _g = ObjectPool.instance.GetObjectForType ("Sphere", false);
+				_g.transform.position = transform.position;
+				_g.transform.rotation = Quaternion.identity;
+				//GameObject _g = spawnForYou.SpawnForYou(transform.position, Quaternion.identity);
+
+				Vector3 _ve = Vector3.zero;
+
+				if(_coll.tag == "Player"){// && currentState != PlanetoidState.BlackHole){
+					_ve = (_coll.transform.forward * rangeExplForce[1]) + _coll.transform.TransformDirection (new Vector3 (Random.Range(rangeExplForce[0], rangeExplForce[1]), Random.Range(rangeExplForce[0], rangeExplForce[1]), Random.Range(0.0f, rangeExplForce[1])));
+
+				}else if (_coll.tag == "Sphere"){
+					_ve = new Vector3 (Random.Range(rangeExplForceChain[0], rangeExplForceChain[1]), Random.Range(rangeExplForceChain[0], rangeExplForceChain[1]), Random.Range(rangeExplForceChain[0], rangeExplForceChain[1]));
+				}
+
+
+				_g.GetComponent<Rigidbody> ().AddForce (_ve * 10, ForceMode.VelocityChange);
+
+				if (i == _Subdivisions - 1) {
+					_g.transform.localScale = new Vector3 (valeur, valeur, valeur);
+				} else {
+					float curRandom = transform.localScale.x / (_Subdivisions) + Random.Range (-0.1f, 0.1f);
+					valeur -= curRandom;
+					_g.transform.localScale = new Vector3 (curRandom, curRandom, curRandom);
+				}
+
+
+			}
+
+			//Detruire l'original
+			//currentState = PlanetoidState.Planet;
+			this.transform.localScale = new Vector3(1,1,1);
+			StateCheckup();
+			ObjectPool.instance.PoolObject(this.gameObject);
+			//Destroy (this.gameObject); 
+		} else {
+		
+			//Ici, matiere insuffisante, on propulse puis c'est tout
+		
+		}
+    }
+
+	void StateCheckup (){
+		//Changement d'apparence
+		//PlanetRenderer();
+		//Changement de State
+		PlanetoidState lastState = currentState;
+		currentState = CommonSettupv2.TweakState(transform.localScale.x);
+		if(currentState != lastState)	//si notre state a changé, alors changer parametres du planetoide
+			ChangePlanetObject();
+
+//		int test = PlanetRenderSettup.uniqueInstance.rendersObjects.Length;
+//		print (test);
+
+	}
+
+	//Changement d'apparence ou de propriétés selon le state
+	//Cette fonctione st appellée qu'une fois lorsque nous changeons de state
+	void ChangePlanetObject () {
+
+		//foreach (Transform childTransform in this.transform) Destroy(childTransform.gameObject);
+
+		switch(currentState){
+		case PlanetoidState.Planet:
+			//transform.GetComponent<MeshRenderer>().material = CommonSettupv2.planetoidTriggerValuesS[0].planetMaterial;
+			break;
+
+		case PlanetoidState.Solar:
+
+//			transform.GetComponent<MeshRenderer>().material = CommonSettupv2.planetoidTriggerValuesS[1].planetMaterial;
+//			GameObject flareObj = spawnForYou.Spawn(spawnForYou.flareObjectStatic, transform.position, transform.rotation);
+//			flareObj.transform.parent = transform;
+//			flareObj.transform.localScale = new Vector3(1, 1 ,1);
+			break;
+
+		case PlanetoidState.BlackHole:
+
+						//transform.GetComponent<MeshRenderer>().material = CommonSettupv2.planetoidTriggerValuesS[2].planetMaterial;
+			//			GameObject flareObjToDestroy = transform.Find("Flare(Clone)").gameObject;
+			//			if(flareObjToDestroy != null)
+			//				Destroy(flareObjToDestroy);
+
+//			GameObject holeObj = spawnForYou.Spawn(spawnForYou.holeObjectStatic, transform.position, transform.rotation);
+//			holeObj.transform.parent = transform;
+//			holeObj.transform.localScale = new Vector3(4, 4 ,4);
+//
+//			transform.GetComponent<MeshRenderer>().enabled = false;
+
+			break;
+
+		case PlanetoidState.BlackHoleBoom:
+
+//			GameObject holeObjToDestroy = transform.Find("Singularity(Clone)").gameObject;
+//			if(holeObjToDestroy != null)
+//				Destroy(holeObjToDestroy);
+
+			Explode (GetComponent<Collider>());
+			soundManager.singCount = 0;
+
+			break;
+
+		default:
+			break;
+		}
+	}
+
+//	GameObject myRender;
+//	
+//	GameObject myChildRender;
+
+//	void PlanetRenderer(){
+//		
+//		//Quel objet de rendu
+////		GameObject myRender = CommonSettupv2.CheckRenderIntervale(transform.localScale.x);
+//		//myRender = CommonSettupv2.CheckRenderIntervale(transform.localScale.x);
+//
+//		if(myChildRender != null){
+//		
+//			//Si ce n'est pas celui que j'ai deja
+//			if(myRender.name != myChildRender.name){
+//				//changer l'objet de rendu
+//				ObjectPool.instance.PoolObject(myChildRender);
+//				GameObject _g = ObjectPool.instance.GetObjectForType (myRender.name, false);
+//				_g.transform.position = transform.position;
+//				_g.transform.parent = transform;
+//				_g.transform.rotation = Quaternion.identity;
+//				myChildRender = _g;
+//			}
+//
+//		}else{
+//
+//
+//			//StartCoroutine(WaitForInitialisation());
+//			print ("A " + myChildRender);
+//			GameObject _g = ObjectPool.instance.GetObjectForType (myRender.name, false);
+//			_g.transform.position = transform.position;
+//			_g.transform.parent = transform;
+//			_g.transform.rotation = Quaternion.identity;
+//			myChildRender = _g;
+//			print ("B " + myChildRender);
+//		}
+//
+//	}
+
+//	IEnumerator WaitForInitialisation(){
+//		yield return new WaitForSeconds(5f);
+//		print (myChildRender);
+//		GameObject _g = ObjectPool.instance.GetObjectForType (myRender.name, false);
+//		_g.transform.position = transform.position;
+//		_g.transform.parent = transform;
+//		_g.transform.rotation = Quaternion.identity;
+//		myChildRender = _g;
+//	}
+
+	
+}

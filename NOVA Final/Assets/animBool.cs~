@@ -1,0 +1,22 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class animBool : MonoBehaviour {
+
+	// Use this for initialization
+	void Start () {
+	
+	}
+	
+	// Update is called once per frame
+	void Update () {
+	
+		if(Input.anyKey || Input.GetAxis("StickD-Y-Axis") !=0 || Input.GetAxis("StickD-X-Axis") !=0 || Input.GetAxis("LT-RT-Axis") !=0 || Input.GetAxis("Vertical") !=0 || Input.GetAxis("Horizontal") !=0 ){
+			this.GetComponent<Animator>().SetBool("inflight", true);
+		}else{
+			this.GetComponent<Animator>().SetBool("inflight", false);
+		}
+
+
+	}
+}

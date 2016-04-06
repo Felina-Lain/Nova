@@ -1,0 +1,46 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{241DDFF3-5D55-4A3A-6BAD-0B270E743069}") = "NOVA perfect camera", "Assembly-CSharp.csproj", "{DA0C78BC-0A2D-7FD0-7970-ADFC49F7311B}"
+EndProject
+Project("{241DDFF3-5D55-4A3A-6BAD-0B270E743069}") = "NOVA perfect camera", "Assembly-UnityScript.unityproj", "{94940C5E-55BA-0E7E-1C6B-27F8D6F71308}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DA0C78BC-0A2D-7FD0-7970-ADFC49F7311B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA0C78BC-0A2D-7FD0-7970-ADFC49F7311B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA0C78BC-0A2D-7FD0-7970-ADFC49F7311B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA0C78BC-0A2D-7FD0-7970-ADFC49F7311B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94940C5E-55BA-0E7E-1C6B-27F8D6F71308}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94940C5E-55BA-0E7E-1C6B-27F8D6F71308}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94940C5E-55BA-0E7E-1C6B-27F8D6F71308}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94940C5E-55BA-0E7E-1C6B-27F8D6F71308}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+																																																						GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.inheritsSet = null
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.inheritsSet = Mono
+		$2.inheritsScope = text/x-csharp
+		$2.scope = text/x-csharp
+		$0.TextStylePolicy = $3
+		$3.FileWidth = 120
+		$3.TabWidth = 4
+		$3.IndentWidth = 4
+		$3.EolMarker = Unix
+		$3.inheritsSet = Mono
+		$3.inheritsScope = text/plain
+		$3.scope = text/plain
+	EndGlobalSection
+
+EndGlobal

@@ -1,0 +1,46 @@
+Initialize engine version: 5.2.2f1 (3757309da7e7)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GTX 970 (ID=0x13c2)
+    Vendor:   NVIDIA
+    VRAM:     3072 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Felina\Desktop\Nova proto\Nova Final_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Felina\Desktop\Nova proto\Nova Final_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Felina\Desktop\Nova proto\Nova Final_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading C:\Users\Felina\Desktop\Nova proto\Nova Final_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Users\Felina\Desktop\Nova proto\Nova Final_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Felina\Desktop\Nova proto\Nova Final_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Felina\Desktop\Nova proto\Nova Final_Data\Managed\Assembly-UnityScript.dll (this message is harmless)
+Loading C:\Users\Felina\Desktop\Nova proto\Nova Final_Data\Managed\Assembly-UnityScript.dll into Unity Child Domain
+Platform assembly: C:\Users\Felina\Desktop\Nova proto\Nova Final_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Felina\Desktop\Nova proto\Nova Final_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\Felina\Desktop\Nova proto\Nova Final_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\Felina\Desktop\Nova proto\Nova Final_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\Felina\Desktop\Nova proto\Nova Final_Data\Managed\System.Core.dll (this message is harmless)
+- Completed reload, in  0.035 seconds
+desktop: 1680x1050 60Hz; virtual: 1680x1050 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+Platform assembly: C:\Users\Felina\Desktop\Nova proto\Nova Final_Data\Managed\System.dll (this message is harmless)
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 2d9c -> priority: 1 
+  Thread -> id: 2dac -> priority: 1 
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 5.941174 ms
+
+Unloading 23 unused Assets to reduce memory usage. Loaded Objects now: 3676.
+Total: 0.779510 ms (FindLiveObjects: 0.076799 ms CreateObjectMapping: 0.078847 ms MarkObjects: 0.601080 ms  DeleteObjects: 0.022527 ms)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 76.060249 ms
+
+Unloading 440 unused Assets to reduce memory usage. Loaded Objects now: 786.
+Total: 4.131277 ms (FindLiveObjects: 2.930139 ms CreateObjectMapping: 0.045311 ms MarkObjects: 0.931828 ms  DeleteObjects: 0.223741 ms)
+
+Quit
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 64)
+

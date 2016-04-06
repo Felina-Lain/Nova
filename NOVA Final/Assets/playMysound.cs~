@@ -1,0 +1,21 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class playMysound : MonoBehaviour {
+	
+	public int indexA = 0;
+	public int indexB = 2;
+	
+	public float pitchDistortion = 0.25f;
+	public float volumeDistortion = 0.15f;
+	
+	void OnEnable(){
+		
+		AudioSource source = GetComponent<AudioSource>();
+		source.clip = fxSoundManager.uniqueFXinstance.SetRandomSound(indexA, indexB);
+		source.pitch = Random.Range(1 - pitchDistortion, 1 + pitchDistortion);
+		source.volume = Random.Range(1 - volumeDistortion, 1 + volumeDistortion);
+		source.Play();
+	}
+	
+}

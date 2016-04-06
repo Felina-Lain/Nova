@@ -1,0 +1,149 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Snakemove : MonoBehaviour {
+
+	// Déclaration du tableau qui contiendra les sphères
+	public Transform[] v_elements = new Transform[10];
+	// Déclaration de la vitesse de poursuite des sphères
+	public float _speed = 100.0f;
+	// Déclaration de l'espace entre les sphères
+	public float _gap = 5.0f;
+	//Déclaration du rayon du cercle de déplacement
+	public float _radius = 4.0f;
+	// Déclaration de l'abscisse du déplacement de la sphère
+	public float _x = 0.0f;
+
+
+	public float slithD;
+	public float chronostart;
+	public float chrono;
+	public float _chrono1;
+	public float _chrono2;
+	public int boom;
+
+	public float rotSpeed = 50.0f;
+	public float curRotYSpeed = 0.0f;
+	public float curRotXSpeed = 0.0f;
+	public float reverseByTime;
+
+
+	// Use this for initialization
+	void Start () {
+	
+		chrono = 0.05f + chronostart/2;
+		boom = 3;
+		_chrono1 = chronostart;
+		_chrono2 = chronostart;
+
+	}
+	
+	// Update is called once per frame
+	void Update () {
+
+		if(Time.timeScale > 0f){
+		reverseByTime = 1/Time.timeScale;
+
+		if(Input.GetAxis("StickD-Y-Axis")<0 || Input.GetAxis("StickD-X-Axis") <0 || Input.GetAxis("StickD-Y-Axis") >0 || Input.GetAxis("StickD-X-Axis") >0){
+			//ChenilleFollow();
+			ChenilleAuto();
+		}else{
+
+			ChenilleAuto();
+		}
+
+
+		}
+	}
+
+	public void ChenilleAuto(){
+
+		// Gestion des positions et orientations des sphères de la chaîne
+		for (int i = 0; i<v_elements.Length-1; i++)
+		{
+			v_elements[i].transform.position = Vector3.Lerp(v_elements[i].transform.position, v_elements[i+1].TransformPoint(0.0f, 0.0f, -_gap), _speed/100);		
+			v_elements[i].transform.LookAt(v_elements[i+1]);
+		}	
+
+		// Gestion de la position et orientation de la dernière sphère de la chaîne
+		v_elements[v_elements.Length-1].transform.position = Vector3.Lerp(v_elements[v_elements.Length-1].transform.position, this.transform.TransformPoint(0.0f, 0.0f, -_gap), _speed/100);	
+		v_elements[v_elements.Length-1].transform.LookAt(this.transform);
+
+		// Gestion de la position et orientation de l'objet meneur (la sphère originale)
+
+		switch (boom)
+		{
+
+		case 3:
+			this.transform.Rotate (Vector3.down * Time.deltaTime * slithD);
+			this.transform.Rotate (Vector3.left * Time.deltaTime * slithD / 2);
+
+			chrono -= Time.deltaTime;
+			if(chrono <= 0) boom = 1;
+
+			break;
+	
+		case 1:
+			this.transform.Rotate (Vector3.up * Time.deltaTime * slithD);
+			this.transform.Rotate (Vector3.right * Time.deltaTime * slithD / 2);
+
+			_chrono1 -= Time.deltaTime;
+			_chrono2 = chronostart;
+
+			if (_chrono1 <= 0) boom = 2;
+
+			break;
+
+		case 2:
+			this.transform.Rotate (Vector3.down * Time.deltaTime * slithD);
+			this.transform.Rotate (Vector3.left * Time.deltaTime * slithD / 2);
+
+			_chrono2 -= Time.deltaTime;
+			_chrono1 = chronostart;
+
+			if (_chrono2 <= 0) boom = 1;
+
+			break;
+	
+		default :
+			break;
+		}
+				
+
+		// Incrémentation de l'abscisse selon une base de temps (_x = 1 au bout de 1 seconde)
+		_x += Time.deltaTime;
+		}
+
+	public void ChenilleFollow(){
+		
+
+		// Gestion des positions et orientations des sphères de la chaîne
+		for (int i = 0; i<v_elements.Length-1; i++)
+		{
+			v_elements[i].transform.position = Vector3.Lerp(v_elements[i].transform.position, v_elements[i+1].TransformPoint(0.0f, 0.0f, -_gap), _speed/100);		
+			v_elements[i].transform.LookAt(v_elements[i+1]);
+		}	
+		
+		// Gestion de la position et orientation de la dernière sphère de la chaîne
+		v_elements[v_elements.Length-1].transform.position = Vector3.Lerp(v_elements[v_elements.Length-1].transform.position, this.transform.TransformPoint(0.0f, 0.0f, -_gap), _speed/100);	
+		v_elements[v_elements.Length-1].transform.LookAt(this.transform);
+
+
+		// Gestion de la position et orientation de l'objet meneur (la sphère originale)
+		curRotYSpeed = Mathf.Lerp (curRotYSpeed, rotSpeed * Input.GetAxis("StickD-Y-Axis"), reverseByTime * Time.deltaTime);
+		curRotXSpeed = Mathf.Lerp (curRotXSpeed, rotSpeed * Input.GetAxis("StickD-X-Axis"), reverseByTime * Time.deltaTime);
+		
+		//Rotation Y
+
+		transform.Rotate(transform.InverseTransformDirection(transform.right), -curRotYSpeed * reverseByTime * Time.deltaTime);
+		
+		//transform.Rotate(transform.InverseTransformDirection(transform.right), curRotYSpeed * reverseByTime * Time.deltaTime);
+
+		//RotationX
+		transform.Rotate(transform.InverseTransformDirection(transform.up), curRotXSpeed * reverseByTime * Time.deltaTime);
+	}
+
+	}
+

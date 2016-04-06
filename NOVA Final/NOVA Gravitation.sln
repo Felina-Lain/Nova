@@ -1,0 +1,46 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{8292B81F-9633-B01D-3C81-8326D56B0572}") = "NOVA Gravitation", "Assembly-CSharp.csproj", "{52726AC7-A8A5-9AD1-398C-A3F140A75711}"
+EndProject
+Project("{8292B81F-9633-B01D-3C81-8326D56B0572}") = "NOVA Gravitation", "Assembly-UnityScript.unityproj", "{89626C1F-FACB-F73B-9D86-3F75984C1523}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{52726AC7-A8A5-9AD1-398C-A3F140A75711}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52726AC7-A8A5-9AD1-398C-A3F140A75711}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52726AC7-A8A5-9AD1-398C-A3F140A75711}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52726AC7-A8A5-9AD1-398C-A3F140A75711}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89626C1F-FACB-F73B-9D86-3F75984C1523}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89626C1F-FACB-F73B-9D86-3F75984C1523}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89626C1F-FACB-F73B-9D86-3F75984C1523}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89626C1F-FACB-F73B-9D86-3F75984C1523}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+																	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.inheritsSet = null
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.inheritsSet = Mono
+		$2.inheritsScope = text/x-csharp
+		$2.scope = text/x-csharp
+		$0.TextStylePolicy = $3
+		$3.FileWidth = 120
+		$3.TabWidth = 4
+		$3.IndentWidth = 4
+		$3.EolMarker = Unix
+		$3.inheritsSet = Mono
+		$3.inheritsScope = text/plain
+		$3.scope = text/plain
+	EndGlobalSection
+
+EndGlobal
